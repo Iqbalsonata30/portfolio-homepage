@@ -1,9 +1,9 @@
-build-views:
-	@cd views && npm run build
+build-frontend:
+	@cd frontend && npm run build
 
 build-app: 
 	@go build -o bin/portfolio main.go
 
 
-run-app: build-app
+run-app: build-frontend build-app
 	@./bin/portfolio

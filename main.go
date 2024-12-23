@@ -10,7 +10,7 @@ import (
 	"github.com/iqbalsonata30/personal-website/utils"
 )
 
-const staticDir = "./views/build"
+const staticDir = "./frontend/dist"
 
 func main() {
 	err := utils.SetLogger()
