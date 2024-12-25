@@ -1,3 +1,4 @@
+import { Menu } from "lucide-react";
 import { ModeButton } from "./ModeButton.tsx";
 import { useState } from "react";
 
@@ -15,7 +16,7 @@ function Navbar() {
   return (
     <>
       <header
-        className={`${isOpen ? "hidden" : "sticky"} top-0 z-50 bg-white/30 backdrop-filter backdrop-blur-md dark:bg-slate-900 shadow-xl `}
+        className={`${isOpen ? "hidden transition-transform ease-linear duration-300" : "sticky"}  top-0 z-50 bg-white/30 backdrop-filter backdrop-blur-md dark:bg-slate-900 shadow-xl `}
       >
         <nav className="flex justify-between items-center p-2.5 mx-1 md:mx-10 font-sans">
           <div className="flex items-center">
@@ -34,7 +35,9 @@ function Navbar() {
             <button
               onClick={toggleMenu}
               className="block md:hidden z-50 cursor-pointer px-4 py-2 text-gray-800"
-            ></button>
+            >
+              <Menu className="w-7 h-7 dark:text-white" />
+            </button>
 
             <div className="hidden md:block">
               <ul className="flex items-center text-black gap-4 font-medium">

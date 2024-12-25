@@ -13,7 +13,7 @@ function Project() {
         <hr className="h-1 my-2 bg-gray-300 border-0 rounded dark:bg-gray-400" />
       </div>
 
-      <div className="grid md:grid-cols-3 grid-cols-1 justify-center items-center gap-6 md:gap-4 my-10 w-10/12 md:w-full mx-auto md:max-w-7xl max-w-4xl">
+      <div className="grid md:grid-cols-3 grid-cols-1 justify-center items-center gap-6 md:gap-4 my-5 w-10/12 md:w-full mx-auto md:max-w-7xl max-w-4xl">
         <CardList
           imgUrl="/assets/img/astronaut.png"
           title="Project 1 Title"

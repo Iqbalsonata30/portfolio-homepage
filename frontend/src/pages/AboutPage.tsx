@@ -5,12 +5,12 @@ import Navbar from "../components/Navbar";
 
 function AboutPage() {
   return (
-    <>
+    <div className="bg-white dark:bg-slate-900">
       <Navbar />
       <Description />
       <FollowSection />
       <Footer />
-    </>
+    </div>
   );
 }
 

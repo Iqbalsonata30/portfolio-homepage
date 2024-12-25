@@ -3,7 +3,7 @@ import TypingText from "./TypingText.tsx";
 function Hero() {
   const img = "/assets/img/Iqbal Sonata.JPG";
   return (
-    <section className="bg-slate-200 dark:bg-slate-800 dark:text-white flex md:flex-row items-center justify-center flex-col  md:gap-7 ">
+    <section className="bg-slate-200 dark:bg-slate-800 dark:text-white text-center md:text-start flex md:flex-row items-center justify-center flex-col  md:gap-7 ">
       <div className="container max-w-lg pt-10 pr-10 pl-10 pb-4">
         <TypingText
           text="holla! I'm Iqbal"
