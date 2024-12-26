@@ -1,6 +1,16 @@
 import { useEffect, useState } from "react";
 
-export const TypingText = ({ text = "", speed = 100, className = "" }) => {
+type TextTypingProps = {
+  text: string;
+  speed: number;
+  className: string;
+};
+
+export const TypingText: React.FC<TextTypingProps> = ({
+  text,
+  speed = 100,
+  className = "",
+}) => {
   const [displayedText, setDisplayedText] = useState("");
   const [isComplete, setIsComplete] = useState(false);
 

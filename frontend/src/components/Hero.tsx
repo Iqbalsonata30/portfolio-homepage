@@ -1,12 +1,17 @@
 import TypingText from "./TypingText.tsx";
 
-function Hero() {
+type HeroProps = {
+  text: string;
+  imgUrl: string | null;
+};
+
+const Hero: React.FC<HeroProps> = ({ text, imgUrl }) => {
   const img = "/assets/img/Iqbal Sonata.JPG";
   return (
     <section className="bg-slate-200 dark:bg-slate-800 dark:text-white text-center md:text-start flex md:flex-row items-center justify-center flex-col  md:gap-7 ">
       <div className="container max-w-lg pt-10 pr-10 pl-10 pb-4">
         <TypingText
-          text="holla! I'm Iqbal"
+          text={text}
           className="text-3xl capitalize font-extrabold font-mono mb-2 text-zinc-800 dark:text-white text-start"
           speed={50}
         />
@@ -23,14 +28,16 @@ function Hero() {
         </p>
       </div>
       <div className="p-2 mb-2 md:m-2 max-w-xs max-h-fit ">
-        <img
-          src={img}
-          alt="Iqbal Sonata"
-          className="md:rounded-full rounded-md md:shadow-2xl shadow-lg shadow-gray-500 md:dark:shadow-lg md:dark:shadow-cyan-100"
-        />
+        {imgUrl && (
+          <img
+            src={img}
+            alt="Iqbal Sonata"
+            className="md:rounded-full rounded-md md:shadow-2xl shadow-lg shadow-gray-500 md:dark:shadow-lg md:dark:shadow-cyan-100"
+          />
+        )}
       </div>
     </section>
   );
-}
+};
 
 export default Hero;

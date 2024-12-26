@@ -16,7 +16,7 @@ function Navbar() {
   return (
     <>
       <header
-        className={`${isOpen ? "hidden transition-transform ease-linear duration-300" : "sticky"}  top-0 z-50 bg-white/30 backdrop-filter backdrop-blur-md dark:bg-slate-900 shadow-xl `}
+        className={`${isOpen ? "hidden transition-transform ease-linear duration-300" : "sticky"}  top-0 z-50 bg-white/30 backdrop-filter  backdrop-blur-md dark:bg-slate-900 shadow-xl `}
       >
         <nav className="flex justify-between items-center p-2.5 mx-1 md:mx-10 font-sans">
           <div className="flex items-center">

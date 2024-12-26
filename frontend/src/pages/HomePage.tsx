@@ -5,10 +5,11 @@ import Project from "../components/Project.tsx";
 import Navbar from "./../components/Navbar.tsx";
 
 function HomePage() {
+  const img = "/assets/img/Iqbal Sonata.JPG";
   return (
     <>
       <Navbar />
-      <Hero />
+      <Hero text="holla! I'm Iqbal" imgUrl={img}/>
       <Project />
       <FollowSection />
       <Footer/>

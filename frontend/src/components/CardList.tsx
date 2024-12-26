@@ -7,7 +7,7 @@ interface CardProps{
 
 export const CardList: React.FC<CardProps> = ({ imgUrl, title, stack, description }) => {
   return (
-    <div className="w-full max-w-sm min-h-[340px] border border-slate-300 dark:shadow-md dark:shadow-cyan-100 dark:hover:shadow-lg dark:hover:shadow-cyan-100 dark:border-none shadow-md hover:shadow-2xl hover:-translate-y-8 transition-all duration-200 bg-slate-200 dark:bg-slate-700 rounded-lg ">
+    <div className="w-full max-w-sm min-h-[340px] border border-slate-300 dark:shadow-md dark:shadow-cyan-100/60 dark:hover:shadow-lg dark:hover:shadow-cyan-100 dark:border-none shadow-md hover:shadow-2xl hover:-translate-y-8 transition-all duration-200 bg-slate-200 dark:bg-slate-700 rounded-lg ">
       <img
         src={imgUrl}
         className="h-[150px] w-full rounded-t-lg bg-white dark:bg-slate-500 border-b border-slate-300 dark:border-sky-200"
