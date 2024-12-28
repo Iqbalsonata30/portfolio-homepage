@@ -7,6 +7,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/iqbalsonata30/personal-website/backend/app"
 	"github.com/iqbalsonata30/personal-website/utils"
 )
 
@@ -16,6 +17,13 @@ func main() {
 	err := utils.SetLogger()
 	if err != nil {
 		log.Fatal("log file error : ", err)
+	}
+
+	sqlite, err := app.NewSQLite()
+	fmt.Println(sqlite)
+
+	if err != nil {
+		log.Fatal("error sqlite ", err)
 	}
 
 	fs := http.FileServer(http.Dir(staticDir))
