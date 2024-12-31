@@ -1,6 +1,6 @@
 package domain
 
-type Portfolio struct {
+type Project struct {
 	ID          int
 	Title       string
 	Description string

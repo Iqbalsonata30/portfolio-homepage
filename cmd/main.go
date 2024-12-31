@@ -20,10 +20,8 @@ func main() {
 	}
 
 	sqlite, err := app.NewSQLite()
-	fmt.Println(sqlite)
-
 	if err != nil {
-		log.Fatal("error sqlite ", err)
+		log.Fatal("error setup database : ", err)
 	}
 
 	fs := http.FileServer(http.Dir(staticDir))
@@ -38,7 +36,8 @@ func main() {
 		}
 		fs.ServeHTTP(w, r)
 	})
+	router := app.NewRouter(sqlite.DB)
 
 	fmt.Println("Server starting on localhost:8080")
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":8080", router)
 }

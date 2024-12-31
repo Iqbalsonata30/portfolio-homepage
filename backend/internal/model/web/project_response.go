@@ -1,6 +1,6 @@
 package web
 
-type PortfolioResponse struct {
+type ProjectResponse struct {
 	ID          int    `json:"id"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
