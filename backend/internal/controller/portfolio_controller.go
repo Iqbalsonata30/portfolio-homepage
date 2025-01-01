@@ -10,22 +10,23 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
-type ProjectController struct {
-	Service *service.ProjectService
+type PortfolioController struct {
+	Service *service.PortfolioService
 }
 
-func NewProjectController(service *service.ProjectService) *ProjectController {
-	return &ProjectController{
+func NewPortfolioController(service *service.PortfolioService) *PortfolioController {
+	return &PortfolioController{
 		Service: service,
 	}
 }
 
-func (c *ProjectController) Create(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
-	request := web.ProjectRequest{
+func (c *PortfolioController) Create(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+	request := web.PortfolioRequest{
 		Title:       req.FormValue("title"),
 		Description: req.FormValue("description"),
 		ProjectUrl:  req.FormValue("projectUrl"),
 		ImageUrl:    req.FormValue("imageUrl"),
+		TechStack:   req.FormValue("techStack"),
 	}
 
 	err := c.Service.Create(req.Context(), request)
@@ -41,7 +42,7 @@ func (c *ProjectController) Create(w http.ResponseWriter, req *http.Request, _ h
 	helper.JsonEncode(w, http.StatusCreated, apiResponse)
 }
 
-func (c *ProjectController) FindAll(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
+func (c *PortfolioController) FindAll(w http.ResponseWriter, req *http.Request, _ httprouter.Params) {
 	projects, err := c.Service.FindAll(req.Context())
 	if err != nil {
 		exception.ErrorHandler(w, req, err)

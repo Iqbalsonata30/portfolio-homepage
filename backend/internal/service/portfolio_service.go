@@ -12,21 +12,21 @@ import (
 	"github.com/iqbalsonata30/personal-website/backend/internal/repository"
 )
 
-type ProjectService struct {
-	Repository repository.ProjectRepository
+type PortfolioService struct {
+	Repository repository.PortfolioRepository
 	DB         *sql.DB
 	Validate   *validator.Validate
 }
 
-func NewProjectService(db *sql.DB, repository repository.ProjectRepository, validator *validator.Validate) *ProjectService {
-	return &ProjectService{
+func NewPortfolioService(db *sql.DB, repository repository.PortfolioRepository, validator *validator.Validate) *PortfolioService {
+	return &PortfolioService{
 		Repository: repository,
 		DB:         db,
 		Validate:   validator,
 	}
 }
 
-func (p *ProjectService) Create(ctx context.Context, req web.ProjectRequest) error {
+func (p *PortfolioService) Create(ctx context.Context, req web.PortfolioRequest) error {
 	err := p.Validate.Struct(req)
 	if err != nil {
 		return err
@@ -38,31 +38,34 @@ func (p *ProjectService) Create(ctx context.Context, req web.ProjectRequest) err
 		ImageUrl:    req.ImageUrl,
 		ProjectUrl:  req.ProjectUrl,
 	}
+	techStack := domain.Stack{
+		Technology: req.TechStack,
+	}
 
 	tx, err := p.DB.Begin()
 	if err != nil {
 		return err
 	}
 
-	err = p.Repository.Save(ctx, tx, portfolio)
+	err = p.Repository.Save(ctx, tx, portfolio, techStack)
 	if err != nil {
 		tx.Rollback()
 		return err
 	}
 
 	if err := tx.Commit(); err != nil {
-		log.Println("error committed creating data: ", err)
+		log.Println("error to commit saving data: ", err)
 		return err
 	}
 	return nil
 }
 
-func (p *ProjectService) FindAll(ctx context.Context) ([]web.ProjectResponse, error) {
+func (p *PortfolioService) FindAll(ctx context.Context) ([]web.PortfolioResponse, error) {
 	tx, err := p.DB.Begin()
 	if err != nil {
 		return nil, err
 	}
-	projects, err := p.Repository.FindAll(ctx, tx)
+	portfolios, err := p.Repository.FindAll(ctx, tx)
 	if err != nil {
 		tx.Rollback()
 		return nil, err
@@ -72,6 +75,5 @@ func (p *ProjectService) FindAll(ctx context.Context) ([]web.ProjectResponse, er
 		log.Println("error committed selecting data: ", err)
 		return nil, err
 	}
-
-	return helper.EntitiesToResponse(projects), nil
+	return helper.EntitiesToResponse(portfolios), nil
 }

@@ -2,7 +2,7 @@ build-frontend:
 	@cd frontend && npm run build
 
 build-app: 
-	@go build -o bin/portfolio cmd/main.go
+	@go build -o bin/portfolio main.go
 
 
 run-app: build-frontend build-app

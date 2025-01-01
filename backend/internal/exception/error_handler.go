@@ -13,10 +13,14 @@ func ErrorHandler(w http.ResponseWriter, req *http.Request, err any) {
 		return
 	}
 
+	if notFoundError(w, req, err) {
+		return
+	}
+
 	internalError(w, req, err)
 }
 
-func validationError(w http.ResponseWriter, req *http.Request, err any) bool {
+func validationError(w http.ResponseWriter, _ *http.Request, err any) bool {
 	exception, ok := err.(validator.ValidationErrors)
 	if ok {
 		out := make([]web.Error, len(exception))
@@ -36,10 +40,22 @@ func validationError(w http.ResponseWriter, req *http.Request, err any) bool {
 	return ok
 }
 
-func internalError(w http.ResponseWriter, req *http.Request, err any) {
+func internalError(w http.ResponseWriter, _ *http.Request, err any) {
 	apiResp := web.ApiError{
 		StatusCode: http.StatusInternalServerError,
 		Error:      err,
 	}
 	helper.JsonEncode(w, http.StatusInternalServerError, apiResp)
+}
+
+func notFoundError(w http.ResponseWriter, _ *http.Request, err any) bool {
+	exception, ok := err.(NotFoundError)
+	if ok {
+		apiResp := web.ApiError{
+			StatusCode: http.StatusNotFound,
+			Error:      exception.Error,
+		}
+		helper.JsonEncode(w, http.StatusNotFound, apiResp)
+	}
+	return ok
 }
