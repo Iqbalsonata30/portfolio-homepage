@@ -1,19 +1,26 @@
 package helper
 
 import (
+	"context"
+	"database/sql"
 	"io"
-	"log"
 	"net/http"
 	"os"
 	"path/filepath"
 )
 
+const (
+	SAVE_PATH       = "frontend/public/assets/img/"
+	MAX_UPLOAD_SIZE = 1024 * 1024
+)
+
 func UploadImage(req *http.Request, fieldName string) (path string, err error) {
-	savePath := "frontend/public/assets/img/"
+	if err = req.ParseMultipartForm(MAX_UPLOAD_SIZE); err != nil {
+		return
+	}
 
 	file, fileHeader, err := req.FormFile(fieldName)
 	if err != nil {
-		log.Println("Error in uploading Image : ", err)
 		return
 	}
 	defer file.Close()
@@ -30,7 +37,7 @@ func UploadImage(req *http.Request, fieldName string) (path string, err error) {
 	if fileType != "image/jpeg" && fileType != "image/png" {
 		return
 	}
-	tempFile, err := os.CreateTemp(savePath, "img-*"+filepath.Ext(fileHeader.Filename))
+	tempFile, err := os.CreateTemp(filepath.Dir(SAVE_PATH), "img-*"+filepath.Ext(fileHeader.Filename))
 	if err != nil {
 		return
 	}
@@ -42,4 +49,15 @@ func UploadImage(req *http.Request, fieldName string) (path string, err error) {
 	}
 
 	return filepath.Base(tempFile.Name()), nil
+}
+
+func ImageExists(ctx context.Context, tx *sql.Tx, projectUrl string) (bool, error) {
+	var count int
+	query := `SELECT COUNT(*) FROM "projects" WHERE "project_url" = ?`
+
+	if err := tx.QueryRowContext(ctx, query, projectUrl).Scan(&count); err != nil {
+		return false, err
+	}
+
+	return count > 0, nil
 }

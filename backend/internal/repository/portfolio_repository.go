@@ -20,6 +20,7 @@ func (r *PortfolioRepository) Save(ctx context.Context, tx *sql.Tx, project doma
                   ON CONFLICT("project_url") DO UPDATE SET "project_url"=excluded."project_url"
                   RETURNING "id";
                   `
+
 	err := tx.QueryRowContext(ctx, queryProject, project.Title, project.ImageUrl, project.Description, project.ProjectUrl).Scan(&projectId)
 	if err != nil {
 		log.Println("error inserted projects : ", err)
@@ -72,6 +73,6 @@ func (r *PortfolioRepository) FindAll(ctx context.Context, tx *sql.Tx) ([]domain
 	return portfolios, nil
 }
 
-func (r *PortfolioRepository) Delete(ctx context.Context, tx *sql.Tx) error {
+func (r *PortfolioRepository) Delete(ctx context.Context, tx *sql.Tx, id int) error {
 	return nil
 }

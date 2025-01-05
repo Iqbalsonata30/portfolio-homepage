@@ -28,18 +28,26 @@ func NewPortfolioService(db *sql.DB, repository repository.PortfolioRepository, 
 }
 
 func (p *PortfolioService) Create(ctx context.Context, req web.PortfolioRequest, r *http.Request) error {
+	tx, err := p.DB.Begin()
+	if err != nil {
+		return err
+	}
+
 	if err := p.Validate.StructExcept(req, "ImageUrl"); err != nil {
 		return err
 	}
 
-	imgUrl, err := helper.UploadImage(r, "imageUrl")
-	if err != nil {
-		return err
-	}
-	req.ImageUrl = imgUrl
+	if exists, _ := helper.ImageExists(ctx, tx, req.ProjectUrl); !exists {
+		imgUrl, err := helper.UploadImage(r, "imageUrl")
+		if err != nil {
+			return err
+		}
+		req.ImageUrl = imgUrl
 
-	if err := p.Validate.Struct(req); err != nil {
-		return err
+		if err := p.Validate.Struct(req); err != nil {
+			return err
+		}
+
 	}
 
 	portfolio := domain.Project{
@@ -51,11 +59,6 @@ func (p *PortfolioService) Create(ctx context.Context, req web.PortfolioRequest,
 
 	techStack := domain.Stack{
 		Technology: req.TechStack,
-	}
-
-	tx, err := p.DB.Begin()
-	if err != nil {
-		return err
 	}
 
 	err = p.Repository.Save(ctx, tx, portfolio, techStack)

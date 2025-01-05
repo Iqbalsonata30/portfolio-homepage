@@ -28,8 +28,8 @@ func NewRouter(db *sql.DB) *httprouter.Router {
 	fs := http.FileServer(http.Dir(staticDir))
 	router.ServeFiles("/static/*filepath", http.Dir(staticDir+"/static"))
 
-	router.POST("/api/v1/portfolio", pc.Create)
-	router.GET("/api/v1/portfolio", pc.FindAll)
+	router.POST("/api/v1/portfolios", pc.Create)
+	router.GET("/api/v1/portfolios", pc.FindAll)
 
 	router.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if strings.HasPrefix(r.URL.Path, "/api/") {
