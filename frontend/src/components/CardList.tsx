@@ -29,7 +29,7 @@ export const CardList: React.FC<CardProps> = ({
             {stack}
           </p>
         </div>
-        <p className="text-gray-500 text-sm font-normal text-ellipsis overflow-hidden dark:text-white text-start">
+        <p className="text-gray-500 h-12 text-sm font-normal text-ellipsis dark:text-white text-start text-pretty">
           {description}
         </p>
       </div>
