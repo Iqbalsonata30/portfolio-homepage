@@ -13,7 +13,7 @@ function HomePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/v1/portfolio`);
+        const response = await fetch(`http://localhost:8080/api/v1/portfolios`);
         if (!response.ok) {
           throw new Error(`HTTP error: Status ${response.status}`);
         }
