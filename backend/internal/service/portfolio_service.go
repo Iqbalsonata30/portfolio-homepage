@@ -4,6 +4,7 @@ import (
 	"context"
 	"database/sql"
 	"log"
+	"net/http"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/iqbalsonata30/personal-website/backend/internal/helper"
@@ -26,9 +27,18 @@ func NewPortfolioService(db *sql.DB, repository repository.PortfolioRepository, 
 	}
 }
 
-func (p *PortfolioService) Create(ctx context.Context, req web.PortfolioRequest) error {
-	err := p.Validate.Struct(req)
+func (p *PortfolioService) Create(ctx context.Context, req web.PortfolioRequest, r *http.Request) error {
+	if err := p.Validate.StructExcept(req, "ImageUrl"); err != nil {
+		return err
+	}
+
+	imgUrl, err := helper.UploadImage(r, "imageUrl")
 	if err != nil {
+		return err
+	}
+	req.ImageUrl = imgUrl
+
+	if err := p.Validate.Struct(req); err != nil {
 		return err
 	}
 
@@ -38,6 +48,7 @@ func (p *PortfolioService) Create(ctx context.Context, req web.PortfolioRequest)
 		ImageUrl:    req.ImageUrl,
 		ProjectUrl:  req.ProjectUrl,
 	}
+
 	techStack := domain.Stack{
 		Technology: req.TechStack,
 	}

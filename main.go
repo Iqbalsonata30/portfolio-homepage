@@ -14,7 +14,6 @@ func main() {
 	if err != nil {
 		log.Fatal("log file error : ", err)
 	}
-
 	sqlite, err := app.NewSQLite()
 	if err != nil {
 		log.Fatal("error setup database : ", err)

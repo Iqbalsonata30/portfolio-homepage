@@ -2,6 +2,10 @@ package app
 
 import (
 	"database/sql"
+	"net/http"
+	"os"
+	"path/filepath"
+	"strings"
 
 	validator "github.com/go-playground/validator/v10"
 	"github.com/iqbalsonata30/personal-website/backend/internal/controller"
@@ -11,6 +15,8 @@ import (
 	"github.com/julienschmidt/httprouter"
 )
 
+const staticDir = "./frontend/dist"
+
 func NewRouter(db *sql.DB) *httprouter.Router {
 	validate := validator.New(validator.WithRequiredStructEnabled())
 	repo := repository.NewPortfolioRepository()
@@ -19,10 +25,26 @@ func NewRouter(db *sql.DB) *httprouter.Router {
 
 	router := httprouter.New()
 
-	router.NotFound = exception.NotFoundPage()
+	fs := http.FileServer(http.Dir(staticDir))
+	router.ServeFiles("/static/*filepath", http.Dir(staticDir+"/static"))
+
 	router.POST("/api/v1/portfolio", pc.Create)
 	router.GET("/api/v1/portfolio", pc.FindAll)
+
+	router.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasPrefix(r.URL.Path, "/api/") {
+			exception.NotFoundPage().ServeHTTP(w, r)
+			return
+		}
+		path := filepath.Join(staticDir, r.URL.Path)
+		_, err := os.Stat(path)
+		if os.IsNotExist(err) || err != nil {
+			http.ServeFile(w, r, filepath.Join(staticDir, "index.html"))
+			return
+		}
+
+		fs.ServeHTTP(w, r)
+	})
+
 	return router
 }
-
-func ViewRouter() {}

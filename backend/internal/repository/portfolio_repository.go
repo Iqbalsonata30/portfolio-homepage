@@ -63,11 +63,15 @@ func (r *PortfolioRepository) FindAll(ctx context.Context, tx *sql.Tx) ([]domain
 
 	for rows.Next() {
 		var portfolio domain.Portfolio
-		if err := rows.Scan(&portfolio.ID, &portfolio.Title, &portfolio.TechStack, &portfolio.Description, &portfolio.ProjectUrl, &portfolio.ImageUrl); err != nil {
+		if err := rows.Scan(&portfolio.ID, &portfolio.Title, &portfolio.TechStack, &portfolio.Description, &portfolio.ImageUrl, &portfolio.ProjectUrl); err != nil {
 			log.Println("error scanning data : ", err)
 			return nil, err
 		}
 		portfolios = append(portfolios, portfolio)
 	}
 	return portfolios, nil
+}
+
+func (r *PortfolioRepository) Delete(ctx context.Context, tx *sql.Tx) error {
+	return nil
 }

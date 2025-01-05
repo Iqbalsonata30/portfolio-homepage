@@ -25,11 +25,10 @@ func (c *PortfolioController) Create(w http.ResponseWriter, req *http.Request, _
 		Title:       req.FormValue("title"),
 		Description: req.FormValue("description"),
 		ProjectUrl:  req.FormValue("projectUrl"),
-		ImageUrl:    req.FormValue("imageUrl"),
 		TechStack:   req.FormValue("techStack"),
 	}
 
-	err := c.Service.Create(req.Context(), request)
+	err := c.Service.Create(req.Context(), request, req)
 	if err != nil {
 		exception.ErrorHandler(w, req, err)
 		return
