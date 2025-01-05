@@ -1,6 +1,26 @@
+import { AlertCircle, Loader2 } from "lucide-react";
 import CardList from "./CardList.tsx";
 
-function Project() {
+export interface Project {
+  id: number;
+  title: string;
+  techStack: string;
+  description: string;
+  imageUrl: string;
+  projectUrl: string;
+}
+
+type ProjectProps = {
+  projects: Project[] | null;
+  error: string | null;
+  isLoading: boolean;
+};
+
+export const Project: React.FC<ProjectProps> = ({
+  projects,
+  error,
+  isLoading,
+}) => {
   return (
     <section className="flex flex-col py-10 bg-white dark:bg-slate-900">
       <div className="text-center max-w-lg mx-auto p-5 ">
@@ -14,24 +34,33 @@ function Project() {
       </div>
 
       <div className="grid md:grid-cols-3 grid-cols-1 justify-center items-center gap-6 md:gap-4 my-5 w-10/12 md:w-full mx-auto md:max-w-7xl max-w-4xl">
-        <CardList
-          imgUrl="/assets/img/astronaut.png"
-          title="Project 1 Title"
-          stack="Laravel,React Js, PostgreSQL"
-          description="some description of project 1"
-        />
-        <CardList
-          imgUrl="/assets/img/astronaut.png"
-          title="Project 2 Title"
-          stack="Golang,React JS, TailwindCSS"
-          description="some description of project 2"
-        />
-        <CardList
-          imgUrl="/assets/img/astronaut.png"
-          title="Project 3 Title"
-          stack="Python,Go,Kotlin,Keras"
-          description="some description of project 3"
-        />
+        {isLoading && (
+          <div className="col-span-full flex flex-col items-center justify-center min-h-[200px] gap-4">
+            <Loader2 className="h-8 w-8 animate-spin text-primary" />
+            <p className="text-gray-600 dark:text-gray-400 animate-pulse">
+              Loading amazing projects...
+            </p>
+          </div>
+        )}
+        {error && (
+          <div className="col-span-full p-4 bg-red-50 border border-red-200 rounded-lg">
+            <div className="flex items-center gap-2 text-red-600">
+              <AlertCircle className="h-5 w-5" />
+              <p>Error: {error}</p>
+            </div>
+          </div>
+        )}
+        {projects &&
+          projects.map((project) => (
+            <CardList
+              key={project.id}
+              imgUrl={`/assets/img/${project.imageUrl}`}
+              title={project.title}
+              stack={project.techStack}
+              description={project.description}
+              projectUrl={project.projectUrl}
+            />
+          ))}{" "}
       </div>
 
       <a
@@ -42,6 +71,6 @@ function Project() {
       </a>
     </section>
   );
-}
+};
 
 export default Project;
