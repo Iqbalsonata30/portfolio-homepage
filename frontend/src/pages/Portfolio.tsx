@@ -73,7 +73,7 @@ function Portfolio() {
             project.map((p) => (
               <CardList
                 key={p.id}
-                imgUrl={`/assets/img/${p.imageUrl}`}
+                imgUrl={p.imageUrl}
                 title={p.title}
                 stack={p.techStack}
                 description={p.description}

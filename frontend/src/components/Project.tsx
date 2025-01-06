@@ -54,7 +54,7 @@ export const Project: React.FC<ProjectProps> = ({
           projects.map((project) => (
             <CardList
               key={project.id}
-              imgUrl={`/assets/img/${project.imageUrl}`}
+              imgUrl={project.imageUrl}
               title={project.title}
               stack={project.techStack}
               description={project.description}
