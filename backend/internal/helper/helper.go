@@ -3,18 +3,23 @@ package helper
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 	"os"
+	"path"
 	"path/filepath"
+
+	"cloud.google.com/go/storage"
+	"github.com/google/uuid"
 )
 
 const (
-	SAVE_PATH       = "frontend/public/assets/img/"
 	MAX_UPLOAD_SIZE = 1024 * 1024
 )
 
-func UploadImage(req *http.Request, fieldName string) (path string, err error) {
+func UploadImage(ctx context.Context, req *http.Request, fieldName string) (path string, err error) {
 	if err = req.ParseMultipartForm(MAX_UPLOAD_SIZE); err != nil {
 		return
 	}
@@ -37,18 +42,27 @@ func UploadImage(req *http.Request, fieldName string) (path string, err error) {
 	if fileType != "image/jpeg" && fileType != "image/png" {
 		return
 	}
-	tempFile, err := os.CreateTemp(filepath.Dir(SAVE_PATH), "img-*"+filepath.Ext(fileHeader.Filename))
+
+	bucketName := os.Getenv("CLOUD_STORAGE_BUCKET")
+	client, err := storage.NewClient(ctx)
 	if err != nil {
 		return
 	}
-	defer tempFile.Close()
+	defer client.Close()
 
-	_, err = io.Copy(tempFile, file)
+	fileName := uuid.NewString() + filepath.Ext(fileHeader.Filename)
+
+	w := client.Bucket(bucketName).Object(fileName).NewWriter(ctx)
+	defer w.Close()
+
+	_, err = io.Copy(w, file)
 	if err != nil {
 		return
 	}
 
-	return filepath.Base(tempFile.Name()), nil
+	// NOTICE: store in string is expensive for memory
+	objectURL := fmt.Sprintf("https://storage.googleapis.com/%s/%s", bucketName, w.Name)
+	return objectURL, nil
 }
 
 func ImageExists(ctx context.Context, tx *sql.Tx, projectUrl string) (bool, error) {
@@ -60,4 +74,38 @@ func ImageExists(ctx context.Context, tx *sql.Tx, projectUrl string) (bool, erro
 	}
 
 	return count > 0, nil
+}
+
+func DeleteImage(ctx context.Context, imageName string) error {
+	bucketName := os.Getenv("CLOUD_STORAGE_BUCKET")
+
+	client, err := storage.NewClient(ctx)
+	if err != nil {
+		return err
+	}
+	defer client.Close()
+
+	err = client.Bucket(bucketName).Object(imageName).Delete(ctx)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func FindImageUrl(ctx context.Context, tx *sql.Tx, id int) (string, error) {
+	var imageURL string
+	query := `SELECT "img_url" FROM "projects" WHERE "id" = ?`
+	row := tx.QueryRowContext(ctx, query, id)
+	err := row.Scan(&imageURL)
+	if err != nil {
+		return "", err
+	}
+
+	parsedUrl, err := url.Parse(imageURL)
+	if err != nil {
+		return "", err
+	}
+
+	return path.Base(parsedUrl.Path), nil
 }

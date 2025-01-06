@@ -7,10 +7,16 @@ import (
 
 	"github.com/iqbalsonata30/personal-website/backend/app"
 	"github.com/iqbalsonata30/personal-website/utils"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	err := utils.SetLogger()
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file : ")
+	}
+
+	err = utils.SetLogger()
 	if err != nil {
 		log.Fatal("log file error : ", err)
 	}

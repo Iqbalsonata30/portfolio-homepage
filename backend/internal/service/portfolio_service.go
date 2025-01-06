@@ -3,8 +3,11 @@ package service
 import (
 	"context"
 	"database/sql"
+	"fmt"
 	"log"
 	"net/http"
+	"strconv"
+	"strings"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/iqbalsonata30/personal-website/backend/internal/helper"
@@ -37,9 +40,16 @@ func (p *PortfolioService) Create(ctx context.Context, req web.PortfolioRequest,
 		return err
 	}
 
-	if exists, _ := helper.ImageExists(ctx, tx, req.ProjectUrl); !exists {
-		imgUrl, err := helper.UploadImage(r, "imageUrl")
+	exists, err := helper.ImageExists(ctx, tx, req.ProjectUrl)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	if !exists {
+		imgUrl, err := helper.UploadImage(ctx, r, "imageUrl")
 		if err != nil {
+			fmt.Println("error upload image :", err)
 			return err
 		}
 		req.ImageUrl = imgUrl
@@ -58,7 +68,7 @@ func (p *PortfolioService) Create(ctx context.Context, req web.PortfolioRequest,
 	}
 
 	techStack := domain.Stack{
-		Technology: req.TechStack,
+		Technology: strings.ToLower(req.TechStack),
 	}
 
 	err = p.Repository.Save(ctx, tx, portfolio, techStack)
@@ -90,4 +100,36 @@ func (p *PortfolioService) FindAll(ctx context.Context) ([]web.PortfolioResponse
 		return nil, err
 	}
 	return helper.EntitiesToResponse(portfolios), nil
+}
+
+func (p *PortfolioService) Delete(ctx context.Context, id string) error {
+	parseId, _ := strconv.Atoi(id)
+
+	tx, err := p.DB.Begin()
+	if err != nil {
+		return err
+	}
+
+	imgName, err := helper.FindImageUrl(ctx, tx, parseId)
+	if err != nil {
+		return err
+	}
+
+	err = helper.DeleteImage(ctx, imgName)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	err = p.Repository.Delete(ctx, tx, parseId)
+	if err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	if err := tx.Commit(); err != nil {
+		return err
+	}
+
+	return nil
 }

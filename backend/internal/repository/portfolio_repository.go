@@ -74,5 +74,11 @@ func (r *PortfolioRepository) FindAll(ctx context.Context, tx *sql.Tx) ([]domain
 }
 
 func (r *PortfolioRepository) Delete(ctx context.Context, tx *sql.Tx, id int) error {
+	query := `DELETE FROM "projects" WHERE "id" = ?`
+	_, err := tx.ExecContext(ctx, query, id)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

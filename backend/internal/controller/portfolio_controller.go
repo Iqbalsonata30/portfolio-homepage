@@ -54,3 +54,20 @@ func (c *PortfolioController) FindAll(w http.ResponseWriter, req *http.Request, 
 	}
 	helper.JsonEncode(w, http.StatusOK, apiResponse)
 }
+
+func (c *PortfolioController) Delete(w http.ResponseWriter, req *http.Request, ps httprouter.Params) {
+	id := ps.ByName("projectId")
+
+	err := c.Service.Delete(req.Context(), id)
+	if err != nil {
+		exception.ErrorHandler(w, req, err)
+		return
+	}
+
+	apiResp := web.APIResponse{
+		StatusCode: http.StatusOK,
+		Message:    "Data has been deleted succesfully",
+	}
+
+	helper.JsonEncode(w, http.StatusOK, apiResp)
+}

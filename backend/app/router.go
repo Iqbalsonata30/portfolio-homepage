@@ -30,6 +30,9 @@ func NewRouter(db *sql.DB) *httprouter.Router {
 
 	router.POST("/api/v1/portfolios", pc.Create)
 	router.GET("/api/v1/portfolios", pc.FindAll)
+	router.DELETE("/api/v1/portfolios/:projectId", pc.Delete)
+
+	router.MethodNotAllowed = exception.MethodNotAllowedPage()
 
 	router.NotFound = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if strings.HasPrefix(r.URL.Path, "/api/") {
