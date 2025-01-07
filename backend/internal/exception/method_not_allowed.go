@@ -3,7 +3,7 @@ package exception
 import (
 	"net/http"
 
-	"github.com/iqbalsonata30/personal-website/backend/internal/helper"
+	"github.com/iqbalsonata30/personal-website/backend/helper"
 	"github.com/iqbalsonata30/personal-website/backend/internal/model/web"
 )
 

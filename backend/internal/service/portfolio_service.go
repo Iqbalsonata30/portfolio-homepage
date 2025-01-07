@@ -10,7 +10,7 @@ import (
 	"strings"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/iqbalsonata30/personal-website/backend/internal/helper"
+	"github.com/iqbalsonata30/personal-website/backend/helper"
 	"github.com/iqbalsonata30/personal-website/backend/internal/model/domain"
 	"github.com/iqbalsonata30/personal-website/backend/internal/model/web"
 	"github.com/iqbalsonata30/personal-website/backend/internal/repository"

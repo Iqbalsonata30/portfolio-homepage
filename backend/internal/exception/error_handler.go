@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/go-playground/validator/v10"
-	"github.com/iqbalsonata30/personal-website/backend/internal/helper"
+	"github.com/iqbalsonata30/personal-website/backend/helper"
 	"github.com/iqbalsonata30/personal-website/backend/internal/model/web"
 )
 
@@ -18,6 +18,10 @@ func ErrorHandler(w http.ResponseWriter, req *http.Request, err any) {
 	}
 
 	if notFoundError(w, req, err) {
+		return
+	}
+
+	if unauthorizedError(w, req, err) {
 		return
 	}
 
@@ -73,6 +77,18 @@ func notFoundError(w http.ResponseWriter, _ *http.Request, err any) bool {
 			Error:      exception.Error,
 		}
 		helper.JsonEncode(w, http.StatusNotFound, apiResp)
+	}
+	return ok
+}
+
+func unauthorizedError(w http.ResponseWriter, _ *http.Request, err any) bool {
+	exception, ok := err.(UnauthorizedError)
+	if ok {
+		apiResp := web.ApiError{
+			StatusCode: http.StatusUnauthorized,
+			Error:      exception.Error,
+		}
+		helper.JsonEncode(w, http.StatusUnauthorized, apiResp)
 	}
 	return ok
 }

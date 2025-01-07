@@ -2,9 +2,10 @@ package controller
 
 import (
 	"net/http"
+	"strings"
 
+	"github.com/iqbalsonata30/personal-website/backend/helper"
 	"github.com/iqbalsonata30/personal-website/backend/internal/exception"
-	"github.com/iqbalsonata30/personal-website/backend/internal/helper"
 	"github.com/iqbalsonata30/personal-website/backend/internal/model/web"
 	"github.com/iqbalsonata30/personal-website/backend/internal/service"
 	"github.com/julienschmidt/httprouter"
@@ -60,14 +61,18 @@ func (c *PortfolioController) Delete(w http.ResponseWriter, req *http.Request, p
 
 	err := c.Service.Delete(req.Context(), id)
 	if err != nil {
-		exception.ErrorHandler(w, req, err)
-		return
+		if strings.Contains(err.Error(), "no rows in result") {
+			exception.ErrorHandler(w, req, exception.NewNotFoundError("Data not found."))
+			return
+		} else {
+			exception.ErrorHandler(w, req, err)
+			return
+		}
 	}
 
 	apiResp := web.APIResponse{
 		StatusCode: http.StatusOK,
 		Message:    "Data has been deleted succesfully",
 	}
-
 	helper.JsonEncode(w, http.StatusOK, apiResp)
 }

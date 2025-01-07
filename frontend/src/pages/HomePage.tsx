@@ -2,6 +2,7 @@ import FollowSection from "../components/FollowSection.tsx";
 import Footer from "../components/Footer.tsx";
 import Hero from "../components/Hero.tsx";
 import Project from "../components/Project.tsx";
+import { BASE_URL } from "../config/env.ts";
 import Navbar from "./../components/Navbar.tsx";
 import { useEffect, useState } from "react";
 
@@ -13,7 +14,12 @@ function HomePage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/v1/portfolios`);
+        const response = await fetch(BASE_URL.concat("/api/v1/portfolios"), {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
         if (!response.ok) {
           throw new Error(`HTTP error: Status ${response.status}`);
         }

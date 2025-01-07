@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/iqbalsonata30/personal-website/backend/app"
+	"github.com/iqbalsonata30/personal-website/backend/helper"
 	"github.com/iqbalsonata30/personal-website/utils"
 	"github.com/joho/godotenv"
 )
@@ -24,6 +25,13 @@ func main() {
 	if err != nil {
 		log.Fatal("error setup database : ", err)
 	}
+
+	token, err := helper.CreateToken()
+	if err != nil {
+		log.Fatal("error create token", err)
+	}
+
+	fmt.Println("JWT TOKEN :", token)
 
 	router := app.NewRouter(sqlite.DB)
 

@@ -28,9 +28,9 @@ func NewRouter(db *sql.DB) *httprouter.Router {
 	fs := http.FileServer(http.Dir(staticDir))
 	router.ServeFiles("/static/*filepath", http.Dir(staticDir+"/static"))
 
-	router.POST("/api/v1/portfolios", pc.Create)
-	router.GET("/api/v1/portfolios", pc.FindAll)
-	router.DELETE("/api/v1/portfolios/:projectId", pc.Delete)
+	router.POST("/api/v1/portfolios", middleware(pc.Create))
+	router.GET("/api/v1/portfolios", CORS(pc.FindAll))
+	router.DELETE("/api/v1/portfolios/:projectId", middleware(pc.Delete))
 
 	router.MethodNotAllowed = exception.MethodNotAllowedPage()
 

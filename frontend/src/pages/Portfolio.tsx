@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import { useEffect, useState } from "react";
 import Project from "../components/Project";
 import { AlertCircle, Loader2 } from "lucide-react";
+import { BASE_URL } from "../config/env";
 
 function Portfolio() {
   const [project, setProject] = useState<Project[] | null>(null);
@@ -14,7 +15,13 @@ function Portfolio() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/v1/portfolios`);
+        const response = await fetch(BASE_URL.concat("/api/v1/portfolios"), {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
         if (!response.ok) {
           throw new Error(`HTTP error: Status ${response.status}`);
         }
