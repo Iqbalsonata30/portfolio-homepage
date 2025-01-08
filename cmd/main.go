@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"path/filepath"
 
 	"github.com/iqbalsonata30/personal-website/backend/app"
 	"github.com/iqbalsonata30/personal-website/backend/helper"
@@ -12,9 +13,9 @@ import (
 )
 
 func main() {
-	err := godotenv.Load()
+	err := godotenv.Load(filepath.Join("./", ".env"))
 	if err != nil {
-		log.Fatal("Error loading .env file : ")
+		log.Fatal("Error loading .env file : ", err)
 	}
 
 	err = utils.SetLogger()
@@ -25,6 +26,7 @@ func main() {
 	if err != nil {
 		log.Fatal("error setup database : ", err)
 	}
+	defer sqlite.DB.Close()
 
 	token, err := helper.CreateToken()
 	if err != nil {
@@ -32,9 +34,8 @@ func main() {
 	}
 
 	fmt.Println("JWT TOKEN :", token)
-
 	router := app.NewRouter(sqlite.DB)
 
 	fmt.Println("Server starting on localhost:8080")
-	http.ListenAndServe(":8080", router)
+	log.Fatal(http.ListenAndServe(":8080", router))
 }

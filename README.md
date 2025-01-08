@@ -1,8 +1,12 @@
+<<<<<<< HEAD
+
 # 💻 Iqbal Sonata Homepage 💻
+
 > A responsive portfolio website to showcase my skills, projects, and experiences. This project serves as a centralized platform to demonstrate my technical expertise and personal growth.
->  Access it on : https://iqbalsonata.xyz/
+> Access it on : https://iqbalsonata.xyz/
 
 ## Preview
+
 ![Screenshot from 2025-01-08 21 13 20](https://github.com/user-attachments/assets/7cf4e273-9636-47d0-a0f3-03bebb1211f9)
 
 <div>
@@ -34,8 +38,9 @@ export VITE_APP_ENVIRONMENT= 'dev' || 'prod'
 <p>4. make run-app</p>
 
 ## ⚙️ Contribution
+
 If you have any suggestions on what to improve in this portfolio and would like to share them, feel free to leave an issue or fork project to implement your own ideas 🙂
 
-* * *
+---
 
 Copyright © 2025 Iqbal Sonata
