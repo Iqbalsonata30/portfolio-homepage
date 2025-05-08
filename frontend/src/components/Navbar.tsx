@@ -1,104 +1,84 @@
-import { Menu } from "lucide-react";
-import { ModeButton } from "./ModeButton.tsx";
-import { useState } from "react";
+"use client"
 
-function Navbar() {
-  const name = "Iqbal Sonata";
-  const logo = "/assets/img/astronaut.png";
-  const path = window.location.pathname;
+import {
+  BriefcaseBusiness,
+  Contact,
+  Home,
+  SendIcon,
+} from 'lucide-react'
 
-  const [isOpen, setIsOpen] = useState(false);
 
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
 
+import { Menu } from 'lucide-react';
+import { Button } from './ui/button';
+
+
+
+type NavItem = {
+  title: string;
+  href: string;
+  icon: JSX.Element;
+};
+
+const navItems: NavItem[] = [
+  { title: "Home", href: "/", icon: <Home /> },
+  { title: "About Us", href: "/about", icon: <Contact /> },
+  { title: "Portfolio", href: "/portfolio", icon: <BriefcaseBusiness /> },
+];
+
+
+export default function Navbar() {
+  const img = "/assets/img/ninja.png";
   return (
-    <>
-      <header
-        className={`${isOpen ? "hidden transition-transform ease-linear duration-300" : "sticky"}  top-0 z-50 bg-white/30 backdrop-filter  backdrop-blur-md dark:bg-slate-900 shadow-xl `}
-      >
-        <nav className="flex justify-between items-center p-2.5 mx-1 md:mx-10 font-sans">
-          <div className="flex items-center">
-            <img src={logo} alt={name} className="max-w-16" />
-            <a
-              href="/"
-              className="capitalize text-black dark:text-white tracking-wide text-xl md:text-2xl font-bold"
-            >
-              {name}
+    <div className="flex justify-between items-center">
+      <div className="flex items-center justify-center gap-1">
+        <img src={img} className="w-10 h-10 object-contain" />
+        <p className="text-lg font-bold">Iqbal Sonata</p>
+      </div>
+
+      <div className="hidden sm:flex justify-center items-center gap-4 ">
+        {navItems.map((item, i) => (
+          <Button asChild className="cursor-pointer" key={i}>
+            <a href={item.href}>
+              {item.icon} {item.title}
             </a>
-          </div>
 
-          <div className="flex items-center justify-end md:gap-3">
-            <ModeButton />
+          </Button>
+        ))}
+      </div>
 
-            <button
-              onClick={toggleMenu}
-              className="block md:hidden z-50 cursor-pointer px-4 py-2 text-gray-800"
-            >
-              <Menu className="w-7 h-7 dark:text-white" />
-            </button>
-
-            <div className="hidden md:block">
-              <ul className="flex items-center text-black gap-4 font-medium">
-                {["Home", "About", "Portfolio"].map((item, index) => {
-                  const itemPath =
-                    item === "Home" ? "/" : `/${item.toLowerCase()}`;
-                  return (
-                    <li key={index}>
-                      <a
-                        href={itemPath}
-                        className={
-                          path === itemPath
-                            ? "text-black dark:text-white border-b-2 border-cyan-600 pb-2"
-                            : "text-black dark:text-white hover:border-b-2 hover:border-gray-300 pb-2"
-                        }
-                      >
-                        {item}
-                      </a>
-                    </li>
-                  );
-                })}
-              </ul>
-            </div>
-          </div>
-        </nav>
-      </header>
-
-      {isOpen && (
-        <div className="fixed inset-0 z-40 backdrop-filter backdrop-blur-md flex justify-center items-center shadow-lg transform duration-300 ease-in-out translate-y-[-100%] opacity-0 animate-pull-down">
-          <div className="w-10/12 p-6 bg-white rounded-lg shadow-lg dark:bg-slate-800">
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold text-black dark:text-white">
-                {name}
-              </h2>
-              <button
-                onClick={toggleMenu}
-                className="text-gray-500 hover:text-gray-800 dark:text-gray-200 dark:hover:text-slate-100"
-              >
-                &#10005;
-              </button>
-            </div>
-            <hr />
-
-            <ul className="space-y-2 text-lg mt-2">
-              {["Home", "About", "Portfolio"].map((item, index) => (
-                <li key={index} className="text-start text-sm">
-                  <a
-                    href={`${item === "Home" ? "/" : "/".concat(item.toLowerCase())}`}
-                    className="block text-gray-700 hover:text-black dark:text-gray-200 dark:hover:text-gray-400 transition-colors duration-300"
-                    onClick={toggleMenu}
-                  >
-                    {item}
+      <div className="sm:hidden">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button size="icon" className="cursor-pointer lg:hidden" variant={"neutral"}>
+              <Menu />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56 mx-2">
+            <DropdownMenuLabel>Iqbal Sonata</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup >
+              {navItems.map((item) => (
+                <DropdownMenuItem asChild key={item.href} className="cursor-pointer">
+                  <a href={item.href} className="flex items-center gap-2">
+                    {item.icon}
+                    <span>{item.title}</span>
                   </a>
-                </li>
+                </DropdownMenuItem>
               ))}
-            </ul>
-          </div>
-        </div>
-      )}
-    </>
-  );
+            </DropdownMenuGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div >
+    </div>
+  )
 }
-
-export default Navbar;
