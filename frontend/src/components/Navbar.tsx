@@ -21,8 +21,6 @@ import {
 import { Menu } from 'lucide-react';
 import { Button } from './ui/button';
 
-
-
 type NavItem = {
   title: string;
   href: string;
@@ -36,10 +34,10 @@ const navItems: NavItem[] = [
 ];
 
 
-export default function Navbar() {
+export default function Navbar(): JSX.Element {
   const img = "/assets/img/ninja.png";
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex justify-between items-center border-b-4 pb-4 ">
       <div className="flex items-center justify-center gap-1">
         <img src={img} className="w-10 h-10 object-contain" />
         <p className="text-lg font-bold">Iqbal Sonata</p>
@@ -51,7 +49,6 @@ export default function Navbar() {
             <a href={item.href}>
               {item.icon} {item.title}
             </a>
-
           </Button>
         ))}
       </div>
