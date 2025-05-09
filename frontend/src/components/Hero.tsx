@@ -43,9 +43,6 @@ export default function Hero() {
                   alt="Iqbal Sonata"
                   className="w-full h-full object-cover"
                 />
-                {/* <div className="w-full h-full bg-gray-300 flex items-end justify-center"> */}
-                {/* <div className="w-3/4 h-3/4 rounded-full bg-gray-500"></div> */}
-                {/* </div> */}
               </div>
             </div>
 
@@ -76,7 +73,7 @@ export default function Hero() {
 
             {/* Status badge */}
             <div className="absolute -bottom-2 right-6 bg-green-300 border-2 border-black px-3 py-1 rounded-full text-xs font-bold shadow-[4px_4px_0px_rgba(0,0,0,0.5)]">
-              AVAILABLE FOR PROJECTS
+              This is created for being cool
             </div>
           </div>
         </div>
