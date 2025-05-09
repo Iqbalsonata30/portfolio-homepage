@@ -1,16 +1,19 @@
-import Description from "../components/Description";
+import Layout from "@/components/layouts/Layout";
 import FollowSection from "../components/FollowSection";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
+import FooterSection from "../components/FooterSection";
+import NavbarSection from "../components/NavbarSection";
+import AboutSection from "@/components/AboutSection";
 
 function AboutPage() {
   return (
-    <div className="bg-white dark:bg-slate-900">
-      <Navbar />
-      <Description />
-      <FollowSection />
-      <Footer />
-    </div>
+    <>
+      <Layout>
+        <NavbarSection />
+        <AboutSection />
+        <FollowSection />
+        <FooterSection />
+      </Layout>
+    </>
   );
 }
 

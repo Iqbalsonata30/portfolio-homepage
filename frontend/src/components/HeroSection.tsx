@@ -1,14 +1,12 @@
 export default function Hero() {
-  const img = "/assets/img/ninja.png";
+  const img = "/assets/img/iqbalsonata.png";
   return (
     <section className="relative px-4 py-16 sm:py-24 lg:py-32 bg-[#FFF8EE]">
-      {/* Decorative floating elements */}
       <div className="absolute top-20 left-10 w-20 h-20 bg-teal-300 rounded-full border-2 border-black"></div>
       <div className="absolute bottom-20 left-1/4 w-16 h-16 bg-pink-400 rounded-full border-2 border-black"></div>
       <div className="absolute top-32 right-16 w-24 h-24 bg-yellow-300 rounded-md border-2 border-black transform rotate-12"></div>
 
       <div className="max-w-6xl mx-auto grid md:grid-cols-2 items-center gap-12">
-        {/* Left Column - Text Content */}
         <div className="relative z-10">
           <h1 className="text-2xl sm:text-5xl font-bold tracking-tight text-black mb-6">
             A piece of <br />
