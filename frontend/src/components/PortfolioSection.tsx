@@ -1,4 +1,4 @@
-import { BriefcaseBusiness, Mouse, Plus, SendIcon } from "lucide-react"
+import { BriefcaseBusiness, Mouse, Plus } from "lucide-react"
 import { Button } from "./ui/button"
 
 interface Project {
@@ -29,7 +29,7 @@ const sampleProjects: Project[] = [
         projectUrl: "github.com"
     },
     {
-        id: 2,
+        id: 3,
         title: "Title 2",
         techStack: "React,SQLite",
         description: "Project 2 description",
