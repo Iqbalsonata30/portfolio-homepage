@@ -4,7 +4,6 @@ import {
   BriefcaseBusiness,
   Contact,
   Home,
-  SendIcon,
 } from 'lucide-react'
 
 
