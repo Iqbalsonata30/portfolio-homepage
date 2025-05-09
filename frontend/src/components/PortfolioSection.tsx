@@ -1,4 +1,4 @@
-import { BriefcaseBusiness, Mouse, Plus } from "lucide-react"
+import { Mouse, Plus } from "lucide-react"
 import { Button } from "./ui/button"
 
 interface Project {
