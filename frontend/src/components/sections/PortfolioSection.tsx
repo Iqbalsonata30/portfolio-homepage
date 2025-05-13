@@ -1,7 +1,11 @@
 import { BriefcaseBusiness, Mouse, Plus } from "lucide-react"
-import { Button } from "./ui/button"
+import { Button } from "../ui/button"
 import { useLocation, useSearchParams } from "react-router-dom"
 import { Link } from "react-router-dom"
+
+import { AlertCircleIcon } from "lucide-react"
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
+
 import {
     Pagination,
     PaginationContent,
@@ -11,7 +15,7 @@ import {
     PaginationPrevious,
 } from '@/components/ui/pagination'
 
-interface Project {
+export interface Portfolio {
     id: number,
     title: string,
     techStack: string,
@@ -20,87 +24,43 @@ interface Project {
     imageUrl: string,
 }
 
+type PortfolioProps = {
+    projects: Portfolio[];
+    error: string | null;
+}
 
-const sampleProjects: Project[] = [
-    {
-        id: 1,
-        title: "Title 1",
-        techStack: "React,Typescript",
-        description: "Project 1 descriptionasdaadsadadadasdasdkasdkasdasjdajdasjdasjdjasdaskfcasclakscnaknca asd ak malkdmal mdalm ladl a",
-        imageUrl: "img/test.jpg",
-        projectUrl: "github.com"
-    },
-    {
-        id: 2,
-        title: "Title 2",
-        techStack: "React,SQLite",
-        description: "Project 2 description",
-        imageUrl: "/assets/img/astronaut.png",
-        projectUrl: "github.com"
-    },
-    {
-        id: 3,
-        title: "Title 2",
-        techStack: "React,SQLite",
-        description: "Project 2 description",
-        imageUrl: "/assets/img/astronaut.png",
-        projectUrl: "github.com"
-    },
-    {
-        id: 3,
-        title: "Title 2",
-        techStack: "React,SQLite",
-        description: "Project 2 description",
-        imageUrl: "/assets/img/astronaut.png",
-        projectUrl: "github.com"
-    },
-    {
-        id: 3,
-        title: "Title 2",
-        techStack: "React,SQLite",
-        description: "Project 2 description",
-        imageUrl: "/assets/img/astronaut.png",
-        projectUrl: "github.com"
-    },
-    {
-        id: 3,
-        title: "Title 2",
-        techStack: "React,SQLite",
-        description: "Project 2 description",
-        imageUrl: "/assets/img/astronaut.png",
-        projectUrl: "github.com"
-    },
-    {
-        id: 3,
-        title: "Title 2",
-        techStack: "React,SQLite",
-        description: "Project 2 description",
-        imageUrl: "/assets/img/astronaut.png",
-        projectUrl: "github.com"
-    }
-]
-
-export default function PortfolioSection() {
+export default function PortfolioSection({ projects, error }: PortfolioProps) {
     const path = useLocation().pathname;
     const [searchParams] = useSearchParams();
     const currentPage = parseInt(searchParams.get("page") || "1", 10)
     const itemsPerPage = path === "/" ? 3 : 6
 
-    const totalPages = Math.ceil(sampleProjects.length / itemsPerPage);
+    const totalPages = Math.ceil(projects.length / itemsPerPage);
 
 
     const startIndex = (currentPage - 1) * itemsPerPage
     const endIndex = startIndex + itemsPerPage
 
-    const paginatedProjects = sampleProjects.slice(startIndex, endIndex)
+    const paginatedProjects = projects.slice(startIndex, endIndex)
 
 
     const portfolioIcon = "/assets/img/astronaut.png"
     return (
         <>
             <section className="bg-white p-4 border-black border-t-2 flex flex-col gap-5 items-center justify-center w-full">
+                {error && <Alert variant="destructive">
+                    <AlertCircleIcon />
+                    <AlertTitle>Something went wrong!</AlertTitle>
+                    <AlertDescription>
+                        {error}
+                    </AlertDescription>
+                </Alert>}
+
+
+
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl">
-                    {paginatedProjects.map((project) => (
+                    {!error && paginatedProjects.map((project) => (
                         <div
                             key={project.id}
                             className="border-2 border-black rounded-sm shadow-md flex flex-col"
@@ -117,7 +77,7 @@ export default function PortfolioSection() {
                             <div className="flex flex-col justify-between flex-1 p-3">
                                 <div className="space-y-2">
                                     <h3 className="text-lg font-bold">{project.title}</h3>
-                                    <p className="text-xs text-gray-500 italic break-words">{project.techStack}</p>
+                                    <p className="text-xs text-gray-500 italic break-words capitalize">{project.techStack}</p>
                                     <p className="text-sm text-gray-700 break-words">{project.description}</p>
                                 </div>
 
@@ -137,16 +97,17 @@ export default function PortfolioSection() {
                     ))}
                 </div>
 
-                {path === "/" &&
+                {(path === "/" && !error) &&
                     <Button className="max-w-36 mx-auto" asChild>
                         <Link to="/portfolio">
                             <BriefcaseBusiness />
                             See Portfolio
                         </Link>
                     </Button>
-
                 }
-                {path === "/portfolio" &&
+
+
+                {(path === "/portfolio" && !error) &&
                     <Pagination>
                         <PaginationContent>
                             {currentPage > 1 && (

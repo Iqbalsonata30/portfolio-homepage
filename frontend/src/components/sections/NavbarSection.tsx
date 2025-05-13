@@ -18,8 +18,8 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 import { Menu } from 'lucide-react';
-import { Button } from './ui/button';
 import { Link } from 'react-router-dom';
+import { Button } from '../ui/button';
 
 type NavItem = {
   title: string;

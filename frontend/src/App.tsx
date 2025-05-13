@@ -1,8 +1,8 @@
 import HomePage from "./pages/HomePage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import AboutPage from "./pages/AboutPage";
-import PageNotFound from "./pages/PageNotFound";
 import PortfolioPage from "./pages/PortfolioPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   return (
@@ -11,7 +11,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/portfolio" element={<PortfolioPage />} />
-        <Route path="*" element={<PageNotFound />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
   );

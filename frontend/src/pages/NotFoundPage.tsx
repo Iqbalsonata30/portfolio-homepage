@@ -1,9 +1,9 @@
 import { Frown } from "lucide-react";
-import Footer from "../components/FooterSection";
-import Navbar from "../components/NavbarSection";
+import Footer from "../components/sections/FooterSection";
+import Navbar from "../components/sections/NavbarSection";
 import Layout from "@/components/layouts/Layout";
 
-function PageNotFound() {
+function NotFoundPage() {
   return (
 
     <Layout>
@@ -31,4 +31,4 @@ function PageNotFound() {
   );
 }
 
-export default PageNotFound;
+export default NotFoundPage;
