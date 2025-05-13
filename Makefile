@@ -4,7 +4,6 @@ build-frontend:
 build-app: 
 	@go build -o bin/portfolio cmd/main.go
 
-build-completely: build-frontend build-app
 
 run-app: build-frontend build-app
 	@./bin/portfolio
