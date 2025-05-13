@@ -1,5 +1,4 @@
 import { Frown } from "lucide-react";
-import FollowSection from "../components/FollowSection";
 import Footer from "../components/FooterSection";
 import Navbar from "../components/NavbarSection";
 import Layout from "@/components/layouts/Layout";
