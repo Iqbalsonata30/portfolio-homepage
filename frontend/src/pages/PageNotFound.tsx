@@ -1,13 +1,15 @@
 import { Frown } from "lucide-react";
 import FollowSection from "../components/FollowSection";
-import Footer from "../components/Footer";
-import Navbar from "../components/Navbar";
+import Footer from "../components/FooterSection";
+import Navbar from "../components/NavbarSection";
+import Layout from "@/components/layouts/Layout";
 
 function PageNotFound() {
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-900 flex flex-col">
+
+    <Layout>
       <Navbar />
-      <div className="flex-grow flex flex-col items-center justify-center">
+      <div className="grow flex flex-col items-center justify-center">
         <div className="max-w-2xl w-full text-center space-y-8 mx-auto p-10">
           <div className="flex justify-center">
             <Frown className="w-20 h-20 text-gray-400 animate-bounce dark:text-white" />
@@ -24,10 +26,9 @@ function PageNotFound() {
         </div>
       </div>
       <div className="mt-auto">
-        <FollowSection />
         <Footer />
       </div>
-    </div>
+    </Layout >
   );
 }
 

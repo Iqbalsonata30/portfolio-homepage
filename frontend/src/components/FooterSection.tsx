@@ -1,4 +1,4 @@
-function Footer() {
+function FooterSection() {
   const year = new Date().getFullYear();
   return (
     <footer className="bg-white dark:bg-slate-900 text-center">
@@ -11,4 +11,4 @@ function Footer() {
   );
 }
 
-export default Footer;
+export default FooterSection;

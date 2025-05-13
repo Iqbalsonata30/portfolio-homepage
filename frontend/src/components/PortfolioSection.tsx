@@ -1,5 +1,15 @@
 import { BriefcaseBusiness, Mouse, Plus } from "lucide-react"
 import { Button } from "./ui/button"
+import { useLocation, useSearchParams } from "react-router-dom"
+import { Link } from "react-router-dom"
+import {
+    Pagination,
+    PaginationContent,
+    PaginationItem,
+    PaginationLink,
+    PaginationNext,
+    PaginationPrevious,
+} from '@/components/ui/pagination'
 
 interface Project {
     id: number,
@@ -35,16 +45,62 @@ const sampleProjects: Project[] = [
         description: "Project 2 description",
         imageUrl: "/assets/img/astronaut.png",
         projectUrl: "github.com"
+    },
+    {
+        id: 3,
+        title: "Title 2",
+        techStack: "React,SQLite",
+        description: "Project 2 description",
+        imageUrl: "/assets/img/astronaut.png",
+        projectUrl: "github.com"
+    },
+    {
+        id: 3,
+        title: "Title 2",
+        techStack: "React,SQLite",
+        description: "Project 2 description",
+        imageUrl: "/assets/img/astronaut.png",
+        projectUrl: "github.com"
+    },
+    {
+        id: 3,
+        title: "Title 2",
+        techStack: "React,SQLite",
+        description: "Project 2 description",
+        imageUrl: "/assets/img/astronaut.png",
+        projectUrl: "github.com"
+    },
+    {
+        id: 3,
+        title: "Title 2",
+        techStack: "React,SQLite",
+        description: "Project 2 description",
+        imageUrl: "/assets/img/astronaut.png",
+        projectUrl: "github.com"
     }
 ]
 
 export default function PortfolioSection() {
+    const path = useLocation().pathname;
+    const [searchParams] = useSearchParams();
+    const currentPage = parseInt(searchParams.get("page") || "1", 10)
+    const itemsPerPage = path === "/" ? 3 : 6
+
+    const totalPages = Math.ceil(sampleProjects.length / itemsPerPage);
+
+
+    const startIndex = (currentPage - 1) * itemsPerPage
+    const endIndex = startIndex + itemsPerPage
+
+    const paginatedProjects = sampleProjects.slice(startIndex, endIndex)
+
+
     const portfolioIcon = "/assets/img/astronaut.png"
     return (
         <>
             <section className="bg-white p-4 border-black border-t-2 flex flex-col gap-5 items-center justify-center w-full">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-7xl">
-                    {sampleProjects.map((project) => (
+                    {paginatedProjects.map((project) => (
                         <div
                             key={project.id}
                             className="border-2 border-black rounded-sm shadow-md flex flex-col"
@@ -81,12 +137,46 @@ export default function PortfolioSection() {
                     ))}
                 </div>
 
-                <Button className="max-w-36 mx-auto" asChild>
-                    <a href="/portfolio">
-                        <BriefcaseBusiness />
-                        See Portfolio
-                    </a>
-                </Button>
+                {path === "/" &&
+                    <Button className="max-w-36 mx-auto" asChild>
+                        <Link to="/portfolio">
+                            <BriefcaseBusiness />
+                            See Portfolio
+                        </Link>
+                    </Button>
+
+                }
+                {path === "/portfolio" &&
+                    <Pagination>
+                        <PaginationContent>
+                            {currentPage > 1 && (
+                                <PaginationItem>
+                                    <PaginationPrevious href={`/portfolio?page=${currentPage - 1}`} />
+                                </PaginationItem>
+                            )}
+
+                            {Array.from({ length: totalPages }).map((_, index) => {
+                                const page = index + 1
+                                return (
+                                    <PaginationItem key={page}>
+                                        <PaginationLink
+                                            href={`/portfolio?page=${page}`}
+                                            isActive={page === currentPage}
+                                        >
+                                            {page}
+                                        </PaginationLink>
+                                    </PaginationItem>
+                                )
+                            })}
+
+                            {currentPage < totalPages && (
+                                <PaginationItem>
+                                    <PaginationNext href={`/portfolio?page=${currentPage + 1}`} />
+                                </PaginationItem>
+                            )}
+                        </PaginationContent>
+                    </Pagination>
+                }
             </section>
         </>
     )

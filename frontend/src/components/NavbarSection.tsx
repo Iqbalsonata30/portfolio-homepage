@@ -19,6 +19,7 @@ import {
 
 import { Menu } from 'lucide-react';
 import { Button } from './ui/button';
+import { Link } from 'react-router-dom';
 
 type NavItem = {
   title: string;
@@ -33,7 +34,7 @@ const navItems: NavItem[] = [
 ];
 
 
-export default function Navbar(): JSX.Element {
+export default function NavbarSection(): JSX.Element {
   const img = "/assets/img/ninja.png";
   return (
     <div className="flex justify-between items-center border-b-4 pb-4 ">
@@ -45,9 +46,9 @@ export default function Navbar(): JSX.Element {
       <div className="hidden sm:flex justify-center items-center gap-4 ">
         {navItems.map((item, i) => (
           <Button asChild className="cursor-pointer" key={i}>
-            <a href={item.href}>
+            <Link to={item.href}>
               {item.icon} {item.title}
-            </a>
+            </Link>
           </Button>
         ))}
       </div>
@@ -65,10 +66,10 @@ export default function Navbar(): JSX.Element {
             <DropdownMenuGroup >
               {navItems.map((item) => (
                 <DropdownMenuItem asChild key={item.href} className="cursor-pointer">
-                  <a href={item.href} className="flex items-center gap-2">
+                  <Link to={item.href} className="flex items-center gap-2">
                     {item.icon}
                     <span>{item.title}</span>
-                  </a>
+                  </Link>
                 </DropdownMenuItem>
               ))}
             </DropdownMenuGroup>
